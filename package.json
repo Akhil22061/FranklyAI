@@ -1,24 +1,31 @@
 {
   "name": "initial-project-for-user-validation",
   "version": "1.0.0",
-  "description": "",
+  "description": "FrankieFest UX‑gate demo with TypeScript, Playwright, Lighthouse, and persona sentiment checks",
+  "author": "",
+  "license": "ISC",
   "type": "module",
   "main": "dist/index.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc -p .",
-    "start": "node dist/index.js",
-    "dev": "ts-node --esm src/index.ts",
-    "test:e2e": "playwright test",
+    "start": "node dist/index.js",         
+    "dev": "ts-node --esm src/index.ts",   
+    "test:e2e": "playwright test",          
     "lighthouse": "node scripts/run-lighthouse.js",
-    "ux": "playwright test && ts-node scripts/sentiment.ts"
+    "score:persona": "node scripts/score-persona.js",
+    "test": "npm run test:e2e"            
   },
   "keywords": [],
+  "dependencies": {},
   "devDependencies": {
-    "@google/generative-ai": "^0.24.1",
-    "@playwright/test": "^1.54.1",
+    "@playwright/test": "^1.44.0",
     "@types/node": "^24.0.15",
-    "http-server": "^14.1.1",
-    "lighthouse": "^12.8.0",
+    "lighthouse": "^11.6.0",
+    "openai": "^4.27.0",
+    "sentiment": "^5.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
