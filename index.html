@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Card Application</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div id="welcome-screen" class="screen active">
+            <h1>Welcome to Your Credit Card Application</h1>
+            <p>Ready to find the perfect card for you? Let's get started. The process is quick, simple, and secure.</p>
+            <p>Click "Next" to begin.</p>
+            <button id="welcome-next-btn">Next</button>
+        </div>
+
+        <div id="consent-screen" class="screen">
+            <h1>Consent</h1>
+            <p>Please review our terms and conditions. By checking the box below, you consent to our privacy policy and agree to the terms of service.</p>
+            <label>
+                <input type="checkbox" id="consent-checkbox"> I agree to the terms and conditions.
+            </label>
+            <button id="consent-next-btn" class="btn-disabled" disabled>Next</button>
+        </div>
+
+        <div id="product-select-screen" class="screen">
+            <h1>Select Your Card</h1>
+            <p>Choose the card that best fits your lifestyle.</p>
+            <div id="product-list" class="product-list">
+                </div>
+            <div id="product-summary">
+                </div>
+            <button id="product-select-next-btn" class="btn-disabled" disabled>Continue with Selected Card</button>
+        </div>
+
+        <div id="product-detail-screen" class="screen">
+            <h1 id="detail-title">Product Details</h1>
+            <div id="detail-content">
+                </div>
+            <button class="back-btn" data-target="product-select-screen">Back to Product Selection</button>
+            <button id="product-detail-next-btn">Next</button>
+        </div>
+
+        <div id="qualification-screen" class="screen">
+            <h1>Income Qualification</h1>
+            <p>Please enter your annual income to see if you qualify.</p>
+            <p>Minimum required income for this card: <strong id="required-income"></strong></p>
+            <input type="number" id="income-input" placeholder="e.g., 60000">
+            <p id="income-error" class="error-msg"></p>
+            <button class="back-btn" data-target="product-select-screen">Change Product</button>
+            <button id="qualification-next-btn">Next</button>
+        </div>
+
+        <div id="debt-screen" class="screen">
+            <h1>Debt Declaration</h1>
+            <p>Please declare any existing debts. To proceed, your total debt must be less than $10,000.</p>
+            <input type="number" id="debt-input" placeholder="e.g., 5000">
+             <p id="debt-error" class="error-msg"></p>
+            <button class="back-btn" data-target="product-select-screen">Start Over</button>
+            <button id="debt-next-btn">Next</button>
+        </div>
+
+        <div id="kyc-screen" class="screen">
+            <h1>Identity Verification (KYC)</h1>
+            <p>Please provide your personal details. All fields are required. (Hint: enter "error" as the first name to see the failure screen).</p>
+            <form id="kyc-form">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" placeholder="First Name" required>
+                <p id="first-name-error" class="error-msg"></p>
+
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" placeholder="Last Name" required>
+                <p id="last-name-error" class="error-msg"></p>
+
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" required>
+                <p id="dob-error" class="error-msg"></p>
+
+                <label for="address">Full Address:</label>
+                <input type="text" id="address" placeholder="e.g., 42 Wallaby Way, Sydney 2000" required>
+                <p id="address-error" class="error-msg"></p>
+            </form>
+            <button id="kyc-next-btn" class="btn-disabled" disabled>Next</button>
+        </div>
+
+        <div id="kyc-success-screen" class="screen">
+            <h1>✅ Verification Successful</h1>
+            <p>Your details have been successfully verified. Let's proceed to the final step.</p>
+            <button id="kyc-success-next-btn">Next</button>
+        </div>
+        
+        <div id="kyc-failure-screen" class="screen">
+            <h1>❌ Verification Failed</h1>
+            <p>We could not verify the details you provided. Please go back and ensure all information is correct.</p>
+            <button class="back-btn" data-target="kyc-screen">Go Back</button>
+        </div>
+
+        <div id="doc-upload-screen" class="screen">
+            <h1>Document Upload</h1>
+            <p>Please upload the following documents for final verification. Allowed formats: JPG, PNG, PDF.</p>
+            <form id="upload-form">
+                <label for="drivers-licence">Driver's Licence:</label>
+                <input type="file" id="drivers-licence" accept=".jpg, .jpeg, .png, .pdf" required>
+                <p id="licence-error" class="error-msg"></p>
+                <br><br>
+                <label for="bank-statement">Bank Statement:</label>
+                <input type="file" id="bank-statement" accept=".jpg, .jpeg, .png, .pdf" required>
+                <p id="statement-error" class="error-msg"></p>
+            </form>
+            <button id="doc-upload-next-btn" class="btn-disabled" disabled>Submit Application</button>
+        </div>
+
+        <div id="finish-screen" class="screen">
+            <h1>🎉 Congratulations!</h1>
+            <p>Your application has been successful and your new credit card has been approved!</p>
+            <p>You will receive your card in 5-7 business days.</p>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
