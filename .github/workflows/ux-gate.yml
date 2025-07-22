@@ -1,0 +1,38 @@
+name: UX-Gate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    services:
+      app:
+        image: node:20
+        env:
+          PORT: 3000
+        command: >
+          bash -c "npm ci && npm run start"
+        options: >-
+          --health-cmd="curl -f http://localhost:3000/ || exit 1"
+          --health-interval=5s --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install-deps
+      - run: npx playwright test
+      - run: node scripts/run-lighthouse.js http://localhost:3000/onboarding
+      - run: node scripts/critic.js
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ux-artifacts
+          path: artifacts/
