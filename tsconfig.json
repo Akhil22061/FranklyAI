@@ -4,7 +4,8 @@
     "module": "NodeNext",
     "esModuleInterop": true,
     "strict": true,
-    "outDir": "dist"
-  },
-  "include": ["src", "scripts"]
-}
+    "outDir": "dist",},
+    "include": ["src/**/*", "scripts/**/*"],  
+    "exclude": ["dist"]
+  }
+

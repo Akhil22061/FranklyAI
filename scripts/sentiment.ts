@@ -1,40 +1,75 @@
-import fs from 'fs';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+/**
+ * scripts/sentiment.ts
+ * -------------------------------------------------------------
+ * Reads Playwright artefacts, asks Gemini for a UX-sentiment report,
+ * and writes JSON → artifacts/sentiment.json
+ * -------------------------------------------------------------
+ */
 
-/* ---------- read artefacts (keep under ~8 kB each) ---------------- */
-const runLog  = fs.readFileSync('artifacts/pw-run.json', 'utf8');
-const welcome = fs.readFileSync('artifacts/snaps/01-welcome.png', 'base64');
-const consent = fs.readFileSync('artifacts/snaps/02-consent.png', 'base64');
+import fs from 'fs/promises';
+import { GoogleGenerativeAI, Part } from '@google/generative-ai';
 
-/* ---------- Gemini client ---------------------------------------- */
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+async function main() {
+  /* ---------- read artefacts (keep each chunk < 8 kB) ---------- */
+  const runLog  = await fs.readFile('artifacts/pw-run.json', 'utf8');
+  const welcome = await fs.readFile('artifacts/snaps/01-welcome.png', { encoding: 'base64' });
+  const consent = await fs.readFile('artifacts/snaps/02-consent.png', { encoding: 'base64' });
 
-/* ---------- craft the prompt ------------------------------------- */
-const prompt = `
-You are an expert UX psychologist. Using the run log and screenshots,
-return ONLY valid JSON:
+  /* ---------- Gemini client ----------------------------------- */
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error('GEMINI_API_KEY env-var is missing');
 
+  const genAI = new GoogleGenerativeAI(apiKey);
+  const model = genAI.getGenerativeModel({
+    // If you want the newer model, change to: 'gemini-2.5-flash'
+    model: 'gemini-1.5-flash',
+    generationConfig: {
+      responseMimeType: 'application/json',
+    },
+  });
+
+  /* ---------- craft the prompt as an array of parts ----------- */
+  const promptParts: Part[] = [
+    {
+      text: `You are an expert UX psychologist. Based on the following run log and screenshots, return ONLY valid JSON with the specified schema.
+
+JSON Schema:
 {
-  "overall_sentiment": -5…5,
-  "delight_moments": [ { "screen": "02-consent", "note": string } ],
-  "friction_points": [ { "screen": "04-debt", "note": string } ],
-  "copy_clarity": 1…5,
-  "one_sentence_summary": string
+  "overall_sentiment": "A score from -5 (very negative) to 5 (very positive).",
+  "delight_moments":  [ { "screen": "Screen name or description", "note": "Specific delightful interaction." } ],
+  "friction_points":  [ { "screen": "Screen name or description", "note": "Specific point of friction or confusion." } ],
+  "copy_clarity":     "A score from 1 (very unclear) to 5 (very clear).",
+  "one_sentence_summary": "A concise summary of the overall user experience."
 }
 
+---
 RUN_LOG:
 ${runLog.slice(0, 6000)}
 
-SCREENSHOT_01_WELCOME_BASE64:
-${welcome}
+---
+SCREENSHOT 01: Welcome Screen`,
+    },
+    {
+      inlineData: { mimeType: 'image/png', data: welcome },
+    },
+    {
+      text: `---
+SCREENSHOT 02: Consent Screen`,
+    },
+    {
+      inlineData: { mimeType: 'image/png', data: consent },
+    },
+  ];
 
-SCREENSHOT_02_CONSENT_BASE64:
-${consent}
-`;
+  /* ---------- call Gemini & save report ----------------------- */
+  const result = await model.generateContent(promptParts);
+  const json = result.response.text();
 
-const result = await model.generateContent(prompt);
-const json = result.response.candidates?.[0]?.content?.parts?.[0]?.text ?? '{}';
+  await fs.writeFile('artifacts/sentiment.json', JSON.stringify(JSON.parse(json), null, 2));
+  console.log('✓ sentiment.json created');
+}
 
-fs.writeFileSync('artifacts/sentiment.json', json);
-console.log('sentiment.json created');
+main().catch(err => {
+  console.error('Sentiment script failed:', err);
+  process.exitCode = 1;
+});

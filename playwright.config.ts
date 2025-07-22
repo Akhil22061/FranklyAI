@@ -3,16 +3,22 @@ import path from 'path';
 
 export default defineConfig({
   testDir: 'tests',
+  testMatch: '**/*.e2e.spec.ts',
   outputDir: 'artifacts',
+
+  /* ── reporters ───────────────────────────────────────────── */
+  reporter: [
+    ['json', { outputFile: 'artifacts/pw-run.json' }],
+    ['html', { open: 'never' }]
+  ],
 
   use: {
     baseURL: 'http://localhost:3000',
     video: { mode: 'on', size: { width: 1280, height: 720 } },
     trace: 'on',
-    viewport: { width: 1280, height: 720 },
+    viewport: { width: 1280, height: 720 }
   },
 
-  // Inject the cursor helper into every new page
   webServer: {
     command: 'npx http-server . -p 3000',
     port: 3000,
@@ -20,15 +26,14 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI
   },
 
-  // Playwright v1.40+ supports "contextOptions" → "addInitScript" at config level
-  projects: [{
-    name: 'chromium',
-    use: {
-      contextOptions: {
-        recordVideo: { dir: 'artifacts' },
-        // this script runs before any page code
-        // path must be absolute
+  projects: [
+    {
+      name: 'chromium',
+      use: {
+        contextOptions: {
+          recordVideo: { dir: 'artifacts' }
+        }
       }
     }
-  }]
+  ]
 });
