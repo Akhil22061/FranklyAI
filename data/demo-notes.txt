@@ -1,0 +1,7 @@
+User is shown the credit card application landing page.
+User clicks the 'Apply Now' button.
+The first page of the form asks for personal details: name, address, and date of birth.
+User fills out the form and clicks 'Next'.
+The second page asks for employment and income information. User provides the details and gets a validation error saying the income must be a number, even though they entered '50,000'.
+User removes the comma, entering '50000', and clicks 'Submit'.
+The application is successfully submitted.

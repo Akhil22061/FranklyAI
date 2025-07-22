@@ -1,0 +1,30 @@
+{
+  "persona": "Happy Jane",
+  "classicSentiment": 1,
+  "llm": {
+    "emotional_summary": "I'm happy and excited to receive my new credit card!",
+    "overall_experience_feedback": "The application process was quick and easy. I liked how straightforward the form was, and I appreciated the clear instructions on each page.  The only minor issue I encountered was a formatting error with my income.  I had to remove the comma; otherwise, it was a very smooth process.  I'm so excited to get approved and start using my new credit card!",
+    "scores": {
+      "usability": "9",
+      "learnability": "10",
+      "efficiency": "9",
+      "accessibility": "10",
+      "trust": "10",
+      "error_handling": "8"
+    },
+    "completion_details": {
+      "was_completed": true,
+      "stuck_point": null,
+      "questions_for_support": []
+    },
+    "performance_metrics": {
+      "estimated_total_clicks": "5",
+      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 20}, {\"page\": \"Employment and Income\", \"time_seconds\": 15}]",
+      "retries": 1
+    },
+    "suggestions": [
+      "Improve error handling by accepting numbers with commas or other regional formatting.",
+      "Consider adding a progress bar to show users how far along they are in the application process."
+    ]
+  }
+}

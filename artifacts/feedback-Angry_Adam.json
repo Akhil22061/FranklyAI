@@ -1,0 +1,30 @@
+{
+  "persona": "Angry Adam",
+  "classicSentiment": 1,
+  "llm": {
+    "emotional_summary": "I'm furious, this application process was a waste of my time.",
+    "overall_experience_feedback": "This application process was unbelievably frustrating.  I hate this company already and I haven't even gotten the credit card yet!  The form itself was straightforward enough, but that ridiculous error with the comma in my income?  Seriously?  Who designs a form that can't handle a simple comma in a number field?  It's insulting.  I'm only finishing this because I desperately need this card.  The whole thing felt clunky and cheap. I would much rather jump through hoops made of fire than deal with this garbage ever again.",
+    "scores": {
+      "usability": "3",
+      "learnability": "4",
+      "efficiency": "2",
+      "accessibility": "5",
+      "trust": "1",
+      "error_handling": "1"
+    },
+    "completion_details": {
+      "was_completed": true,
+      "stuck_point": null,
+      "questions_for_support": []
+    },
+    "performance_metrics": {
+      "estimated_total_clicks": "7",
+      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 30}, {\"page\": \"Employment Details\", \"time_seconds\": 15}]",
+      "retries": 1
+    },
+    "suggestions": [
+      "Fix your broken validation on the income field.  It should allow commas or handle the input appropriately. ",
+      "Seriously consider investing in a UX consultant. Your application is clunky and makes a terrible first impression."
+    ]
+  }
+}

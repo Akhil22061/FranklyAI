@@ -1,5 +1,5 @@
 /**
- * scripts/persona-feedback.js
+ * scripts/score-persona.js
  * -------------------------------------------------------------
  * Reads a demo transcript, iterates through predefined personas,
  * asks Gemini for a UX critique from each persona's perspective,
@@ -9,7 +9,6 @@
 
 import fs from 'fs/promises';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-// Corrected import for the 'sentiment' CommonJS module
 import Sentiment from 'sentiment';
 
 async function main() {
@@ -19,7 +18,6 @@ async function main() {
     throw new Error('The GEMINI_API_KEY environment variable is not set!');
   }
   const genAI = new GoogleGenerativeAI(apiKey);
-  // Configure the model to use Gemini 1.5 Flash and to expect a JSON response
   const model = genAI.getGenerativeModel({
     model: 'gemini-1.5-flash',
     generationConfig: {
@@ -31,17 +29,16 @@ async function main() {
   const personasFile = await fs.readFile('scripts/personas/persons.json', 'utf8');
   const { persons: personas } = JSON.parse(personasFile);
 
-  // Stash whatever telemetry or page text your E2E script produced
-  const demoTranscript = await fs.readFile('artifacts/demo-notes.txt', 'utf8');
+  // CORRECTED: Read the input transcript from the new 'data' folder
+  const demoTranscript = await fs.readFile('data/demo-notes.txt', 'utf8');
 
   // Process each persona
   for (const p of personas) {
     console.log(`Processing persona: ${p.name}...`);
 
-    // 1️⃣ Classic sentiment analysis (quick numeric check)
-    // The Sentiment constructor is imported as the default. PorterStemmer is a property on it.
+    // 1️⃣ Classic sentiment analysis
     const sentimentAnalyzer = new Sentiment();
-    const classicSentiment = sentimentAnalyzer.analyze(demoTranscript, { extras: {}, language: 'en' }).score;
+    const classicSentiment = sentimentAnalyzer.analyze(demoTranscript).score;
 
 
     // 2️⃣ LLM-flavored persona critique using Gemini
@@ -92,7 +89,7 @@ async function main() {
       const outPath = `artifacts/feedback-${p.name.replace(/\s+/g, '_')}.json`;
       const outputData = {
         persona: p.name,
-        classicSentiment: classicSentiment, // usually −5 … +5
+        classicSentiment: classicSentiment,
         llm: llmJson,
       };
 

@@ -1,0 +1,30 @@
+{
+  "persona": "Nervous Nelly",
+  "classicSentiment": 1,
+  "llm": {
+    "emotional_summary": "I felt mostly relieved that I completed the application, but also a little frustrated by the income entry issue.",
+    "overall_experience_feedback": "The application process was quite straightforward, and I appreciated the clear instructions on each page.  However, I was initially confused by the error message regarding my income.  I had entered my income as '50,000', which is how I usually write it and I was unsure why it was rejected.  After removing the comma, I was able to proceed, but I did feel a little uneasy and concerned that it might indicate other issues that might show up later. I'm glad I was able to complete it, but the whole thing took longer than I would have liked.",
+    "scores": {
+      "usability": "7",
+      "learnability": "8",
+      "efficiency": "6",
+      "accessibility": "8",
+      "trust": "7",
+      "error_handling": "4"
+    },
+    "completion_details": {
+      "was_completed": true,
+      "stuck_point": null,
+      "questions_for_support": []
+    },
+    "performance_metrics": {
+      "estimated_total_clicks": "6",
+      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 10}, {\"page\": \"Personal Details\", \"time_seconds\": 60}, {\"page\": \"Employment and Income\", \"time_seconds\": 90}]",
+      "retries": 1
+    },
+    "suggestions": [
+      "Clarify the acceptable format for income entry on the employment and income page (e.g., include an example or note that commas should not be used).",
+      "Improve error messages to be more user-friendly and provide clear guidance on how to correct the issue. For example, include a sentence such as \"Please enter numbers only. Do not use commas or other symbols.\""
+    ]
+  }
+}
