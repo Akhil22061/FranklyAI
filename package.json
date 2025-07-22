@@ -11,22 +11,24 @@
   },
   "scripts": {
     "build": "tsc -p .",
-    "start": "node dist/index.js",         
-    "dev": "ts-node --esm src/index.ts",   
-    "test:e2e": "playwright test",          
+    "start": "node dist/index.js",
+    "dev": "ts-node --esm src/index.ts",
+    "test:e2e": "playwright test",
     "lighthouse": "node scripts/run-lighthouse.js",
     "score:persona": "node scripts/score-persona.js",
-    "test": "npm run test:e2e"            
+    "test": "npm run test:e2e",
+    "ux": "playwright test && node scripts/score-persona.js"
   },
   "keywords": [],
-  "dependencies": {},
+  "dependencies": {
+    "@google/generative-ai": "^0.12.0",
+    "sentiment": "^5.0.2"
+  },
   "devDependencies": {
     "@playwright/test": "^1.44.0",
-    "@types/node": "^24.0.15",
+    "@types/node": "^20.14.2",
     "lighthouse": "^11.6.0",
-    "openai": "^4.27.0",
-    "sentiment": "^5.0.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.4.5"
   }
 }
