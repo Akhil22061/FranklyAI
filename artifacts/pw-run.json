@@ -86,12 +86,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 9517,
+                  "duration": 10802,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-07-22T06:55:38.350Z",
+                  "startTime": "2025-07-23T00:02:01.806Z",
                   "annotations": [],
                   "attachments": [
                     {
@@ -112,7 +112,7 @@
           ],
           "id": "97d89665223e7abe87e3-febed64b4fa6969339ae",
           "file": "credit-card.e2e.spec.ts",
-          "line": 22,
+          "line": 58,
           "column": 1
         }
       ]
@@ -120,8 +120,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-07-22T06:55:35.770Z",
-    "duration": 12836.571,
+    "startTime": "2025-07-23T00:01:57.665Z",
+    "duration": 16363.294000000002,
     "expected": 1,
     "skipped": 0,
     "unexpected": 0,

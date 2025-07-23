@@ -2,15 +2,15 @@
   "persona": "Clumsy Craig",
   "classicSentiment": 1,
   "llm": {
-    "emotional_summary": "I started out okay, but then got frustrated by the income field error.",
-    "overall_experience_feedback": "The application process was mostly fine, except for that income field.  It wasn't clear what format it wanted, and then it just gave me an error.  I felt a bit daft for not getting it right away, but mostly frustrated that I had to fix it.  I mean, it's pretty standard to use commas in numbers, right?  I'm glad I finally got it submitted though.",
+    "emotional_summary": "I started off feeling okay, but then got a bit frustrated by the income field.",
+    "overall_experience_feedback": "The application process was mostly straightforward, which was nice.  I filled in my personal details without any problems and then moved onto the employment section.  It was a bit annoying when I got an error because of the comma in my income.  I thought it would have automatically removed that for me. I did appreciate that it told me what was wrong, however, so I could fix it.  I eventually submitted the application successfully.",
     "scores": {
       "usability": "7",
       "learnability": "8",
       "efficiency": "6",
-      "accessibility": "9",
+      "accessibility": "8",
       "trust": "7",
-      "error_handling": "3"
+      "error_handling": "6"
     },
     "completion_details": {
       "was_completed": true,
@@ -18,13 +18,13 @@
       "questions_for_support": []
     },
     "performance_metrics": {
-      "estimated_total_clicks": "6",
+      "estimated_total_clicks": "5",
       "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 20}, {\"page\": \"Employment Details\", \"time_seconds\": 15}]",
       "retries": 1
     },
     "suggestions": [
-      "Improve the error messaging for the income field to clearly state the required format (e.g., 'Please enter your income as a whole number without commas or periods').",
-      "Consider allowing for multiple formats of income entry, such as with or without commas, for improved usability."
+      "Improve error messages to be more user friendly and suggest how to fix the issue. ",
+      "Add automatic formatting/removal of commas and other special characters in fields like income to make the process smoother."
     ]
   }
 }

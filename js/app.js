@@ -9,9 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const productInfo = {
         basic: { name: 'Basic Card', description: 'A simple card for everyday use.', incomeReq: 30000, creditLimit: 5000, benefits: '<li>1% cashback on all purchases</li><li>No annual fee</li><li>Basic fraud protection</li>' },
-        silver: { name: 'Silver Card', description: 'Great rewards and benefits for frequent shoppers.', incomeReq: 50000, creditLimit: 15000, benefits: '<li>3% cashback on groceries and gas</li><li>Travel insurance included</li><li>$50 annual fee</li>' },
+        silver: { name: 'Silver Card', description: 'Great rewards and benefits.', incomeReq: 50000, creditLimit: 15000, benefits: '<li>3% cashback on groceries and gas</li><li>Travel insurance included</li><li>$50 annual fee</li>' },
         gold: { name: 'Gold Card', description: 'Premium perks for the discerning customer.', incomeReq: 80000, creditLimit: 30000, benefits: '<li>5% cashback on travel and dining</li><li>Airport lounge access</li><li>24/7 concierge service</li><li>$150 annual fee</li>' }
     };
+    
+    // Ordered list of screens for progress bar logic
+    const screenOrder = [
+        'welcome-screen', 'consent-screen', 'product-select-screen', 
+        'qualification-screen', 'debt-screen', 'kyc-screen', 'doc-upload-screen', 'finish-screen'
+    ];
+
 
     // --- DOM ELEMENTS ---
     const screens = document.querySelectorAll('.screen');
@@ -49,31 +56,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const docUploadNextBtn = document.getElementById('doc-upload-next-btn');
     const licenceError = document.getElementById('licence-error');
     const statementError = document.getElementById('statement-error');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
 
     // --- VALIDATION FUNCTIONS ---
-    
-    const validateName = (name) => {
-        const re = /^[a-zA-Z'-]+$/;
-        return re.test(String(name).trim());
-    };
+    const validateName = (name) => /^[a-zA-Z'-]+$/.test(String(name).trim());
     
     const validateAge = () => {
         const dob = new Date(kycDobInput.value);
         if (isNaN(dob.getTime())) return false;
-        
-        const year = dob.getFullYear();
         const today = new Date();
         const eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
-        if (year < 1900 || year >= 2025) return false;
-        return dob <= eighteenYearsAgo;
+        return dob <= eighteenYearsAgo && dob.getFullYear() > 1900;
     };
 
-    const validateAddress = () => {
-        const address = kycAddressInput.value;
-        const hasNumber = /[0-9]/.test(address);
-        return address.length >= 10 && hasNumber;
-    };
+    const validateAddress = () => kycAddressInput.value.length >= 10 && /[0-9]/.test(kycAddressInput.value);
     
     const validateFile = (fileInput) => {
         const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
@@ -81,17 +78,38 @@ document.addEventListener('DOMContentLoaded', () => {
         const maxFileSize = 5242880; // 5 MB
         const file = fileInput.files[0];
         if (!file) return false;
-        
-        const isTypeValid = allowedTypes.includes(file.type);
-        const isSizeValid = file.size > minFileSize && file.size < maxFileSize;
-        
-        return isTypeValid && isSizeValid;
+        return allowedTypes.includes(file.type) && file.size > minFileSize && file.size < maxFileSize;
     };
 
     // --- HELPER FUNCTIONS ---
+    const updateProgressBar = (currentScreenId) => {
+        // Find the index of the current screen. Handle special cases like success/failure screens.
+        let screenIndex = screenOrder.indexOf(currentScreenId);
+
+        // Treat detail/success/failure screens as part of their preceding step for progress
+        if (currentScreenId === 'product-detail-screen') screenIndex = screenOrder.indexOf('product-select-screen');
+        if (currentScreenId === 'kyc-success-screen' || currentScreenId === 'kyc-failure-screen') screenIndex = screenOrder.indexOf('kyc-screen');
+
+        const totalSteps = screenOrder.length - 1; // Don't count welcome screen as a step
+        const progressPercentage = (screenIndex / totalSteps) * 100;
+
+        progressBar.style.width = `${progressPercentage}%`;
+        
+        if(screenIndex < totalSteps) {
+            progressText.textContent = `Step ${screenIndex + 1} of ${totalSteps}`;
+        } else {
+            progressText.textContent = 'Application Complete!';
+            progressBar.style.width = '100%';
+        }
+    };
+
     const showScreen = (screenId) => {
-        screens.forEach(screen => screen.classList.remove('active'));
-        document.getElementById(screenId).classList.add('active');
+        screens.forEach(screen => screen.classList.add('hidden'));
+        const activeScreen = document.getElementById(screenId);
+        if (activeScreen) {
+            activeScreen.classList.remove('hidden');
+            updateProgressBar(screenId);
+        }
     };
 
     const populateProducts = () => {
@@ -99,9 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.keys(productInfo).forEach(key => {
             const product = productInfo[key];
             const card = document.createElement('div');
-            card.className = 'product-card';
+            card.className = 'product-card border-2 border-slate-200 p-4 rounded-lg cursor-pointer hover:border-blue-500 hover:shadow-md transition';
             card.dataset.productId = key;
-            card.innerHTML = `<h3>${product.name}</h3><p>${product.description}</p>`;
+            card.innerHTML = `
+                <h3 class="font-bold text-slate-800">${product.name}</h3>
+                <p class="text-sm text-slate-600">${product.description}</p>
+            `;
             card.addEventListener('click', () => selectProduct(key));
             productListDiv.appendChild(card);
         });
@@ -110,82 +131,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectProduct = (productId) => {
         applicationData.selectedProduct = productId;
         const product = productInfo[productId];
-        document.querySelectorAll('.product-card').forEach(card => card.classList.remove('selected'));
-        document.querySelector(`.product-card[data-product-id="${productId}"]`).classList.add('selected');
-        productSummaryDiv.innerHTML = `
-            <strong>Selected: ${product.name}</strong><br>
-            Income Requirement: $${product.incomeReq.toLocaleString()}<br>
-            Credit Limit: Up to $${product.creditLimit.toLocaleString()}
-        `;
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.classList.remove('selected', 'border-blue-500', 'ring-2', 'ring-blue-500');
+            card.classList.add('border-slate-200');
+        });
+        const selectedCard = document.querySelector(`.product-card[data-product-id="${productId}"]`);
+        selectedCard.classList.add('selected', 'border-blue-500', 'ring-2', 'ring-blue-500');
+        selectedCard.classList.remove('border-slate-200');
+        
+        productSummaryDiv.innerHTML = `<strong>Selected: ${product.name}</strong>`;
         productSelectNextBtn.disabled = false;
-        productSelectNextBtn.classList.remove('btn-disabled');
     };
     
-    // --- EVENT LISTENERS AND DYNAMIC VALIDATION ---
-
+    // --- DYNAMIC VALIDATION ---
     const checkKycForm = () => {
-        let isFormValid = true;
-        if (kycFirstNameInput.value && !validateName(kycFirstNameInput.value)) {
-            firstNameError.textContent = 'Please enter a valid first name (letters only).';
-            isFormValid = false;
-        } else { firstNameError.textContent = ''; }
-
-        if (kycLastNameInput.value && !validateName(kycLastNameInput.value)) {
-            lastNameError.textContent = 'Please enter a valid last name (letters only).';
-            isFormValid = false;
-        } else { lastNameError.textContent = ''; }
+        const isFirstNameValid = validateName(kycFirstNameInput.value);
+        firstNameError.textContent = kycFirstNameInput.value && !isFirstNameValid ? 'Please enter a valid first name.' : '';
         
-        if (kycDobInput.value && !validateAge()) {
-            dobError.textContent = 'Please enter a valid date (you must be over 18 and born after 1900).';
-            isFormValid = false;
-        } else { dobError.textContent = ''; }
+        const isLastNameValid = validateName(kycLastNameInput.value);
+        lastNameError.textContent = kycLastNameInput.value && !isLastNameValid ? 'Please enter a valid last name.' : '';
+        
+        const isAgeValid = validateAge();
+        dobError.textContent = kycDobInput.value && !isAgeValid ? 'You must be over 18.' : '';
 
-        if (kycAddressInput.value && !validateAddress()) {
-            addressError.textContent = 'Please enter a valid address (must be at least 10 characters and include a number).';
-            isFormValid = false;
-        } else { addressError.textContent = ''; }
+        const isAddressValid = validateAddress();
+        addressError.textContent = kycAddressInput.value && !isAddressValid ? 'Please enter a valid address.' : '';
         
         const allFilled = [...kycForm.querySelectorAll('input')].every(input => input.value.trim() !== '');
-        if (!allFilled) { isFormValid = false; }
-        
-        kycNextBtn.disabled = !isFormValid;
-        kycNextBtn.classList.toggle('btn-disabled', !isFormValid);
+        const allValid = isFirstNameValid && isLastNameValid && isAgeValid && isAddressValid;
+
+        kycNextBtn.disabled = !(allFilled && allValid);
     };
 
     const checkUploadForm = () => {
-        let isLicenceValid = false;
-        if (driversLicenceInput.files.length > 0) {
-            if (validateFile(driversLicenceInput)) {
-                licenceError.textContent = '';
-                isLicenceValid = true;
-            } else {
-                licenceError.textContent = 'Invalid file. Must be JPG, PNG, or PDF between 10 KB and 5 MB.';
-            }
-        }
+        const isLicenceValid = validateFile(driversLicenceInput);
+        licenceError.textContent = driversLicenceInput.files.length > 0 && !isLicenceValid ? 'Invalid file. Must be JPG, PNG, or PDF (10KB-5MB).' : '';
 
-        let isStatementValid = false;
-        if (bankStatementInput.files.length > 0) {
-            if (validateFile(bankStatementInput)) {
-                statementError.textContent = '';
-                isStatementValid = true;
-            } else {
-                statementError.textContent = 'Invalid file. Must be JPG, PNG, or PDF between 10 KB and 5 MB.';
-            }
-        }
-        
-        const isFormValid = isLicenceValid && isStatementValid;
-        docUploadNextBtn.disabled = !isFormValid;
-        docUploadNextBtn.classList.toggle('btn-disabled', !isFormValid);
+        const isStatementValid = validateFile(bankStatementInput);
+        statementError.textContent = bankStatementInput.files.length > 0 && !isStatementValid ? 'Invalid file. Must be JPG, PNG, or PDF (10KB-5MB).' : '';
+
+        docUploadNextBtn.disabled = !(isLicenceValid && isStatementValid);
     };
 
+    // --- EVENT LISTENERS ---
     kycForm.addEventListener('input', checkKycForm);
     uploadForm.addEventListener('change', checkUploadForm);
     
     welcomeNextBtn.addEventListener('click', () => showScreen('consent-screen'));
-    consentCheckbox.addEventListener('change', () => {
-        consentNextBtn.disabled = !consentCheckbox.checked;
-        consentNextBtn.classList.toggle('btn-disabled', !consentCheckbox.checked);
-    });
+    consentCheckbox.addEventListener('change', () => consentNextBtn.disabled = !consentCheckbox.checked);
     consentNextBtn.addEventListener('click', () => showScreen('product-select-screen'));
     productSelectNextBtn.addEventListener('click', () => {
         const product = productInfo[applicationData.selectedProduct];
@@ -203,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const income = parseInt(incomeInput.value, 10);
         const requiredIncome = productInfo[applicationData.selectedProduct].incomeReq;
         if (isNaN(income) || income < requiredIncome) {
-            incomeErrorEl.textContent = `Sorry, you do not meet the minimum income requirement of $${requiredIncome.toLocaleString()}. Please choose another product.`;
+            incomeErrorEl.textContent = `Sorry, you do not meet the minimum income requirement of $${requiredIncome.toLocaleString()}.`;
         } else {
             applicationData.income = income;
             incomeErrorEl.textContent = '';
@@ -238,9 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const yyyy = today.getFullYear() - 18;
         const mm = String(today.getMonth() + 1).padStart(2, '0');
         const dd = String(today.getDate()).padStart(2, '0');
-        
-        kycDobInput.min = '1900-01-01';
         kycDobInput.max = `${yyyy}-${mm}-${dd}`;
+        kycDobInput.min = '1900-01-01';
     };
 
     populateProducts();

@@ -2,15 +2,15 @@
   "persona": "Angry Adam",
   "classicSentiment": 1,
   "llm": {
-    "emotional_summary": "I'm furious, this application process was a waste of my time.",
-    "overall_experience_feedback": "This application process was unbelievably frustrating.  I hate this company already and I haven't even gotten the credit card yet!  The form itself was straightforward enough, but that ridiculous error with the comma in my income?  Seriously?  Who designs a form that can't handle a simple comma in a number field?  It's insulting.  I'm only finishing this because I desperately need this card.  The whole thing felt clunky and cheap. I would much rather jump through hoops made of fire than deal with this garbage ever again.",
+    "emotional_summary": "I'm furious! This application process was a waste of my time.",
+    "overall_experience_feedback": "This whole thing was a joke. I needed this credit card, so I had to go through this ridiculous application.  The fact that I had to re-enter my income because your system couldn't handle a simple comma is infuriating.  It's clear that whoever designed this doesn't care about their users' time or sanity. I felt completely disrespected, like they assumed I was an idiot who couldn't understand the most basic number formatting conventions. The whole thing made me want to scream.",
     "scores": {
-      "usability": "3",
-      "learnability": "4",
-      "efficiency": "2",
+      "usability": "2",
+      "learnability": "3",
+      "efficiency": "1",
       "accessibility": "5",
       "trust": "1",
-      "error_handling": "1"
+      "error_handling": "2"
     },
     "completion_details": {
       "was_completed": true,
@@ -18,13 +18,13 @@
       "questions_for_support": []
     },
     "performance_metrics": {
-      "estimated_total_clicks": "7",
-      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 30}, {\"page\": \"Employment Details\", \"time_seconds\": 15}]",
+      "estimated_total_clicks": "5",
+      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 30}, {\"page\": \"Employment and Income\", \"time_seconds\": 20}]",
       "retries": 1
     },
     "suggestions": [
-      "Fix your broken validation on the income field.  It should allow commas or handle the input appropriately. ",
-      "Seriously consider investing in a UX consultant. Your application is clunky and makes a terrible first impression."
+      "Allow users to enter numbers with commas or other regional formatting.",
+      "Improve error messages to be more user-friendly and helpful, not just cryptic error codes."
     ]
   }
 }

@@ -2,15 +2,15 @@
   "persona": "Nervous Nelly",
   "classicSentiment": 1,
   "llm": {
-    "emotional_summary": "I felt mostly relieved that I completed the application, but also a little frustrated by the income entry issue.",
-    "overall_experience_feedback": "The application process was quite straightforward, and I appreciated the clear instructions on each page.  However, I was initially confused by the error message regarding my income.  I had entered my income as '50,000', which is how I usually write it and I was unsure why it was rejected.  After removing the comma, I was able to proceed, but I did feel a little uneasy and concerned that it might indicate other issues that might show up later. I'm glad I was able to complete it, but the whole thing took longer than I would have liked.",
+    "emotional_summary": "I felt mostly relieved that I completed the application, but also a little frustrated by the income field error.",
+    "overall_experience_feedback": "The application process was quite straightforward, although I did encounter a small hiccup with the income field.  I was initially concerned when it rejected my input with the comma, as I usually use commas in large numbers.  After removing the comma, the application worked fine, but it made me wonder if there was any clearer guidance on the correct format. I took my time to read everything carefully, which probably added to my overall time. I'm glad it finally submitted correctly, though, and I'm happy I completed it without too much trouble. ",
     "scores": {
       "usability": "7",
       "learnability": "8",
       "efficiency": "6",
       "accessibility": "8",
       "trust": "7",
-      "error_handling": "4"
+      "error_handling": "6"
     },
     "completion_details": {
       "was_completed": true,
@@ -23,8 +23,8 @@
       "retries": 1
     },
     "suggestions": [
-      "Clarify the acceptable format for income entry on the employment and income page (e.g., include an example or note that commas should not be used).",
-      "Improve error messages to be more user-friendly and provide clear guidance on how to correct the issue. For example, include a sentence such as \"Please enter numbers only. Do not use commas or other symbols.\""
+      "Provide clearer instructions on the formatting requirements for numerical fields, such as the income field, to help prevent user errors.  Perhaps provide examples or use input masks to guide users. ",
+      "Consider adding a progress bar to show users how far along they are in the application process. This would help alleviate any anxiety and provide a clear sense of completion."
     ]
   }
 }

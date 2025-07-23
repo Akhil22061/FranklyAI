@@ -2,14 +2,14 @@
   "persona": "Happy Jane",
   "classicSentiment": 1,
   "llm": {
-    "emotional_summary": "I'm happy and excited to receive my new credit card!",
-    "overall_experience_feedback": "The application process was quick and easy. I liked how straightforward the form was, and I appreciated the clear instructions on each page.  The only minor issue I encountered was a formatting error with my income.  I had to remove the comma; otherwise, it was a very smooth process.  I'm so excited to get approved and start using my new credit card!",
+    "emotional_summary": "I'm mostly happy and excited to get my new credit card!",
+    "overall_experience_feedback": "The application process was pretty straightforward. I liked that it was simple and easy to follow.  I was a bit frustrated when I got the error message about my income, but it was quickly resolved once I realized I shouldn't use a comma.  The fact that the app let me know it was a number-only field is great. Overall, I'm really happy with how smoothly the process went, and I'm excited to get approved for the credit card!",
     "scores": {
       "usability": "9",
       "learnability": "10",
       "efficiency": "9",
       "accessibility": "10",
-      "trust": "10",
+      "trust": "9",
       "error_handling": "8"
     },
     "completion_details": {
@@ -19,12 +19,12 @@
     },
     "performance_metrics": {
       "estimated_total_clicks": "5",
-      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 20}, {\"page\": \"Employment and Income\", \"time_seconds\": 15}]",
+      "estimated_time_per_page": "[{\"page\": \"Landing Page\", \"time_seconds\": 5}, {\"page\": \"Personal Details\", \"time_seconds\": 30}, {\"page\": \"Employment and Income\", \"time_seconds\": 45}]",
       "retries": 1
     },
     "suggestions": [
-      "Improve error handling by accepting numbers with commas or other regional formatting.",
-      "Consider adding a progress bar to show users how far along they are in the application process."
+      "Clearly state the acceptable format for numerical input fields (e.g., 'Please enter numbers only. Do not use commas or other special characters.') to prevent user errors. ",
+      "Consider adding a progress bar or indicator to show users how far they are through the application process."
     ]
   }
 }
