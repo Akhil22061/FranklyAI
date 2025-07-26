@@ -17,8 +17,6 @@ Traditional QA proves the path works. It often misses confusion, trust gaps, and
 - Reports compile into a single, shareable package for CI or design review
 
 ## Quick start
-> Replace commands with your actual scripts if different. I will tailor this once you confirm your package.json.
-
 ```bash
 # Node 20 recommended
 npm ci
