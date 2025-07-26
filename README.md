@@ -1,4 +1,4 @@
-# Hackday_AI_Tester
+# FranklyAI
 
 FrankieFest 2025 project. An AI “user” that runs through onboarding or application flows and critiques them like a real customer. It outputs plain‑English feedback with emotional tone, structured UX scores, and evidence so product and design can iterate fast.
 
