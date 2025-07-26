@@ -1,6 +1,6 @@
 # FranklyAI
 
-FrankieFest 2025 project. An AI “user” that runs through onboarding or application flows and critiques them like a real customer. It outputs plain‑English feedback with emotional tone, structured UX scores, and evidence so product and design can iterate fast.
+Built for the FrankieFest 2025 hackathon. An AI “user” that runs through onboarding or application flows and critiques them like a real customer. It outputs plain‑English feedback using Gemini 1.5 flash, with emotional tone, structured UX scores, and evidence so product and design can iterate fast.
 
 ## Why this exists
 Traditional QA proves the path works. It often misses confusion, trust gaps, and fragile error handling. This tool gives early signal on the human experience before real users ever touch the flow.
